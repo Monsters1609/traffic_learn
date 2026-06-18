@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traffic</title>
+    <th:block>
+      <link rel="stylesheet" th:href="@{/styles/login}">
+    </th:block>
+  </head>
+  <body>
+    <div class="root" id="root">
+      <div class="container-fluid" id="container">
+        <div class="sessionSignIn" id="container-row">
+          <form action="" method="post">
+            <div class="mb-3">
+              <label for="Account" class="form-label">Account</label>
+              <input type="text" class="form-control" id="Account" />
+            </div>
+            <div class="mb-3">
+              <label for="Password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="Password" />
+            </div>
+            <div class="mb-3 forgot-password">
+              <a href="#Forgot-password">Forgot password</a>
+            </div>
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <a href="#Sign-up" class="btn btn-primary no-decoration" title="Register">Register</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <th:block>
+      <script th:src="@{/js/login}"></script>
+    </th:block>
+  </body>
+</html>

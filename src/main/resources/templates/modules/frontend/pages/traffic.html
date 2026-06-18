@@ -1,0 +1,162 @@
+<!doctype html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{modules/frontend/layouts/layout :: main-layout(~{::title},~{::#styles},~{::#content},~{::#scripts})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <th:block id="styles">
+      <link
+        rel="stylesheet"
+        th:href="@{https://unpkg.com/leaflet@1.9.4/dist/leaflet.css}"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+      />
+      <link rel="stylesheet" th:href="@{/styles/traffic.css}" />
+    </th:block>
+    <title>Traffic</title>
+  </head>
+  <body>
+    <th:block id="content">
+      <div class="tableTraffic" id="tableTraffic">
+        <div
+          class="row onTable d-flex justify-content-between m-2"
+          id="onTable"
+        >
+          <h3 class="titleTable col-5" id="titleTable" style="color: #fff">
+            Traffic Info
+          </h3>
+          <div class="handleBtn col-5 d-flex justify-content-end">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              title="create traffic"
+              data-bs-toggle="modal"
+              data-bs-target="#modal-create-traffic"
+            >
+              <i class="bi bi-plus-circle"></i>
+            </button>
+          </div>
+        </div>
+        <table
+          class="table table-dark table-bordered table-hover table-striped"
+        >
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">ID</th>
+              <th scope="col">Latitude</th>
+              <th scope="col">Longitude</th>
+              <th scope="col">Address</th>
+              <th scope="col">View</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <tr th:each="value,index:${responseAllTraffic.content}">
+              <th scope="row" th:text="${index.count}"></th>
+              <td th:text="${value.trafficId}"></td>
+              <td th:text="${value.lat}"></td>
+              <td th:text="${value.lng}"></td>
+              <td th:text="${value.address}"></td>
+              <td>
+                <button
+                  class="btn"
+                  type="button"
+                  title="View"
+                  style="background: none; border: none"
+                >
+                  <i class="bi bi-eye-fill" style="color: deepskyblue"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn"
+                  type="button"
+                  title="Edit"
+                  style="background: none; border: none"
+                >
+                  <i class="bi bi-pencil-square" style="color: yellow"></i>
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn"
+                  type="button"
+                  title="Delete"
+                  style="background: none; border: none"
+                >
+                  <i class="bi bi-trash2-fill" style="color: orangered"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <caption>
+            <nav>
+              <ul class="pagination justify-content-end" data-bs-theme="dark">
+                <!-- Previous -->
+                <li
+                  class="page-item"
+                  th:classappend="${responseAllTraffic.first} ? 'disabled'"
+                >
+                  <a
+                    class="page-link"
+                    th:href="@{/traffic(page=${responseAllTraffic.number - 1},size=${responseAllTraffic.size})}"
+                  >
+                    Previous
+                  </a>
+                </li>
+
+                <!-- Các số trang -->
+                <li
+                  class="page-item"
+                  th:each="i : ${#numbers.sequence(0, responseAllTraffic.totalPages - 1)}"
+                  th:classappend="${i == responseAllTraffic.number} ? 'active'"
+                >
+                  <a
+                    class="page-link"
+                    th:href="@{/traffic(page=${i},size=${responseAllTraffic.size})}"
+                    th:text="${i + 1}"
+                  >
+                  </a>
+                </li>
+
+                <!-- Next -->
+                <li
+                  class="page-item"
+                  th:classappend="${responseAllTraffic.last} ? 'disabled'"
+                >
+                  <a
+                    class="page-link"
+                    th:href="@{/traffic(page=${responseAllTraffic.number + 1},size=${responseAllTraffic.size})}"
+                  >
+                    Next
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </caption>
+        </table>
+      </div>
+      <div class="chartTraffic" id="chartTraffic">
+        <canvas id="ChartTrafficSpeed"></canvas>
+      </div>
+      <!-- Import modal component -->
+      <th:block
+        th:replace="~{modules/frontend/components/modalAddTraffic :: create-traffic-modal}"
+      ></th:block>
+    </th:block>
+
+    <th:block id="scripts">
+      <script
+        th:src="@{https://unpkg.com/leaflet@1.9.4/dist/leaflet.js}"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+      ></script>
+      <script th:src="@{/js/traffic.js}"></script>
+    </th:block>
+  </body>
+</html>

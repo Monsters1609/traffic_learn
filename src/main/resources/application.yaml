@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: Web traffic
+  datasource:
+    url: jdbc:postgresql://localhost:5432/traffic_db
+    username: postgres
+    password: ducdat1609
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+server:
+  port: 4080
+tomtom.api.key: dRrxO1yXAGX2V9Ee1RSxqG6qT0Gb64j3
+# Trong Spring Boot + Hibernate
+# note: quyết định Hibernate sẽ làm gì với database schema khi ứng dụng khởi động.
+# - none: Không làm gì với database
+# - validate: Kiểm tra Entity có khớp DB không, sai thì báo lỗi
+# - update: Cập nhật schema theo Entity
+# - create: Xóa toàn bộ bảng cũ và tạo lại
+# - create-drop: Tạo mới khi start, xóa khi stop
+# - create-only: Chỉ tạo bảng nếu chưa có (Hibernate 6+)

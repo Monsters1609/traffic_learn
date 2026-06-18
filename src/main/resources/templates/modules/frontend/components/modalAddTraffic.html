@@ -1,0 +1,71 @@
+<div
+  th:fragment="create-traffic-modal"
+  class="modal modal-lg fade"
+  id="modal-create-traffic"
+  tabindex="-1"
+  data-bs-theme="dark"
+  aria-labelledby="#create-traffic-modal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create traffic</h1>
+      </div>
+      <form
+        th:action="@{/add-traffic}"
+        th:object="${traffic_info}"
+        method="post"
+      >
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="lat">Latitude</span>
+            <input
+              type="text"
+              class="form-control"
+              aria-describedby="lat"
+              readonly
+              id="inputShowLat"
+              th:field="*{lat}"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="lng">Longitude</span>
+            <input
+              type="text"
+              class="form-control"
+              aria-describedby="lng"
+              id="inputShowLng"
+              th:field="*{lng}"
+              readonly
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="address">Address</span>
+            <input
+              type="text"
+              class="form-control"
+              aria-describedby="address"
+              id="inputShowAddress"
+              th:field="*{address}"
+              readonly
+            />
+          </div>
+          <div class="mb-3">
+            <div id="map" style="height: 180px"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Create traffic</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

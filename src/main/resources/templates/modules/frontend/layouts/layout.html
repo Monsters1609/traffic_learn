@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="main-layout(title, css, content, js)">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:replace="${title}">Traffic</title>
+  <!-- link thư viện bootstrap css -->
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css}" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+  <link rel="stylesheet"
+    th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css}" />
+  <th:block th:replace="${css}">
+    <!-- style layout -->
+    <link rel="stylesheet" th:href="@{/styles/layout}">
+  </th:block>
+</head>
+
+<body>
+  <header class="header" id="header">
+    <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+      <div class="container-md">
+        <div class="logo col-1" id="logo">
+          <a class="navbar-brand Logo" href="#">Traffic</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <form class="d-flex col-4" style="position: relative; left: -162px;" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <div class="nav nav-underline col-4">
+          <ul class="navbar-nav me-auto my-2 my-lg-0 w-100 d-flex justify-content-end">
+            <li class="nav-item ms-2 me-2">
+              <a class="nav-link" href="#">Sign up</a>
+            </li>
+            <li class="nav-item ms-2 me-2">
+              <a class="nav-link" href="#">Sign in</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <section class="container-fluid container-content w-100 bg-dark" style="min-height: 637px;" id="container-content" data-bs-theme="dark">
+    <div class="row" id="row-content" style="min-height: 637px;">
+      <div class="sider col-2 bg-dark" style="min-height: 637px;" id="sider">
+        <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
+          <nav class="nav nav-pills flex-column">
+
+          </nav>
+        </nav>
+      </div>
+      <div class="content col-10" style="min-height: 637px;" id="content">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page" th:text="${breadcrumb}"></li>
+          </ol>
+        </nav>
+        <div class="container scrollspy-example-2" data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" tabindex="0">
+          <th:block th:replace="${content}"></th:block>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer bg-dark border-top " style="height: 150px;text-align: center;" id="footer" data-bs-theme="dark">
+    <h1 style="color: #fff;">contact</h1>
+  </footer>
+  <!-- thư viện vẽ biểu đồ chartjs -->
+  <script th:src="@{https://cdn.jsdelivr.net/npm/chart.js}"></script>
+  <!-- thư viện script bootstrap -->
+  <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js}"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script th:src="@{https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js}"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js}"
+    integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+    crossorigin="anonymous"></script>
+  <!-- thư viện axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <th:block th:replace="${js}">
+    <!-- script layout -->
+    <script th:src="@{/js/layout}"></script>
+  </th:block>
+</body>
+
+</html>
