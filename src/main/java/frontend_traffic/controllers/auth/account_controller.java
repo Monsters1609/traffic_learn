@@ -11,7 +11,6 @@ import frontend_traffic.dto.account_dto;
 import frontend_traffic.helpers.errors.success_handle;
 import frontend_traffic.models.account_entity;
 import frontend_traffic.services.implementation.account_service;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.*;
 
@@ -24,8 +23,6 @@ public class account_controller {
     public String pageSignIn(Model model) {
         return "modules/frontend/pages/login";
     }
-
-    
 
     @GetMapping("/account")
     @ResponseBody

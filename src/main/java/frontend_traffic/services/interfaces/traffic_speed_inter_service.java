@@ -12,6 +12,8 @@ public interface traffic_speed_inter_service {
 
     traffic_speed_entity getByIdTrafficSpeed(UUID id);
 
+    List<traffic_speed_entity> getByIdTrafficInfo(UUID id);
+
     traffic_speed_entity postTrafficSpeed(traffic_speed_dto request);
 
     // traffic_speed_entity updateTrafficSpeed(UUID id, traffic_speed_dto request);

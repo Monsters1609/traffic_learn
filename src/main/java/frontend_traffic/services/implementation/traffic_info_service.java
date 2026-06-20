@@ -11,9 +11,11 @@ import frontend_traffic.models.traffic_info_entity;
 import frontend_traffic.repository.traffic_info_repository;
 import frontend_traffic.services.interfaces.traffic_info_inter_service;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class traffic_info_service implements traffic_info_inter_service {
     private final traffic_info_repository trafficInfoRepository;
     private final traffic_speed_service trafficSpeedService;
@@ -24,11 +26,11 @@ public class traffic_info_service implements traffic_info_inter_service {
         return result;
     }
 
-    @Scheduled(fixedRate = 5000) // 5 phút
+    @Scheduled(fixedRate = 15 * 60 * 1000)
     public void syncTraffic() {
         List<traffic_info_entity> infos = trafficInfoRepository.findAll();
         for (traffic_info_entity info : infos) {
-            trafficSpeedService.getTrafficSpeed(info.getLat(), info.getLng());
+            trafficSpeedService.getTrafficSpeed(info);
         }
     }
 
@@ -36,6 +38,7 @@ public class traffic_info_service implements traffic_info_inter_service {
     public traffic_info_entity getByIdTraffic(UUID id) {
         traffic_info_entity entity = trafficInfoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Traffic info does not exit!"));
+        System.out.println(entity);
         return entity;
     }
 

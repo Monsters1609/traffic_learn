@@ -56,7 +56,7 @@ public class traffic_aqi_entity extends timestamp_entity {
     @Column(name = "wg")
     private int wg;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "traffic_id")
-    private traffic_info_entity trafficAqis;
+    private traffic_info_entity trafficInfos;
 }

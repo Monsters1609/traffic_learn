@@ -1,14 +1,15 @@
 package frontend_traffic.controllers.management;
 
+import java.util.UUID;
+
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+// import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import frontend_traffic.dto.traffic_info_dto;
-import frontend_traffic.helpers.errors.success_handle;
+// import frontend_traffic.helpers.errors.success_handle;
 import frontend_traffic.models.traffic_info_entity;
 import frontend_traffic.services.implementation.traffic_info_service;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,18 @@ public class traffic_info_controller {
         trafficInfoService.addTraffic(request);
         // return ResponseEntity.ok(new success_handle<>(HttpStatus.NO_CONTENT, "Add
         // traffic info successfully!"));
+        return "redirect:/traffic";
+    }
+
+    @PostMapping("/update/{id}")
+    public String putMethodName(@PathVariable UUID id, @ModelAttribute traffic_info_dto entity) {
+        trafficInfoService.updateTraffic(id, entity);
+        return "redirect:/traffic";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String postMethodName(@PathVariable UUID id) {
+        trafficInfoService.deleteByIdTraffic(id);
         return "redirect:/traffic";
     }
 

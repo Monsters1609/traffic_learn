@@ -47,7 +47,7 @@ public class traffic_speed_entity extends timestamp_entity {
     @Column(name = "road_closure")
     private Boolean roadClosure;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "traffic_id")
-    private traffic_info_entity trafficSpeeds;
+    private traffic_info_entity trafficInfos;
 }

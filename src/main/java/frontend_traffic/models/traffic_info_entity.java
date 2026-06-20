@@ -25,9 +25,9 @@ public class traffic_info_entity extends timestamp_entity {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "trafficSpeeds", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<traffic_speed_entity> traffic_speed;
+    @OneToMany(mappedBy = "trafficInfos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<traffic_speed_entity> traffic_speeds = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trafficAqis", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<traffic_aqi_entity> traffic_aqi;
+    @OneToMany(mappedBy = "trafficInfos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<traffic_aqi_entity> traffic_aqis = new ArrayList<>();
 }

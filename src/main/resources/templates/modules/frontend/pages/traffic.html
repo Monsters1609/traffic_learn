@@ -33,8 +33,7 @@
               class="btn btn-primary"
               type="submit"
               title="create traffic"
-              data-bs-toggle="modal"
-              data-bs-target="#modal-create-traffic"
+              onclick="openCreateTraffic()"
             >
               <i class="bi bi-plus-circle"></i>
             </button>
@@ -67,17 +66,33 @@
                   class="btn"
                   type="button"
                   title="View"
-                  style="background: none; border: none"
+                  style="
+                    background: none;
+                    border: none;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
                 >
                   <i class="bi bi-eye-fill" style="color: deepskyblue"></i>
                 </button>
               </td>
               <td>
                 <button
-                  class="btn"
-                  type="button"
+                  class="btn_update_traffic_info"
                   title="Edit"
-                  style="background: none; border: none"
+                  style="
+                    background: none;
+                    border: none;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                  th:data-id="${value.trafficId}"
+                  th:data-lat="${value.lat}"
+                  th:data-lng="${value.lng}"
+                  th:data-address="${value.address}"
+                  onclick="openUpdateTraffic(this)"
                 >
                   <i class="bi bi-pencil-square" style="color: yellow"></i>
                 </button>
@@ -87,7 +102,15 @@
                   class="btn"
                   type="button"
                   title="Delete"
-                  style="background: none; border: none"
+                  style="
+                    background: none;
+                    border: none;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                  th:data-id="${value.trafficId}"
+                  onclick="openPopupDeleteTraffic(this)"
                 >
                   <i class="bi bi-trash2-fill" style="color: orangered"></i>
                 </button>
@@ -146,7 +169,10 @@
       </div>
       <!-- Import modal component -->
       <th:block
-        th:replace="~{modules/frontend/components/modalAddTraffic :: create-traffic-modal}"
+        th:replace="~{modules/frontend/components/modalTrafficInfo :: traffic-modal}"
+      ></th:block>
+      <th:block
+        th:replace="~{modules/frontend/components/modalDeleteTraffic :: traffic-modal-delete}"
       ></th:block>
     </th:block>
 

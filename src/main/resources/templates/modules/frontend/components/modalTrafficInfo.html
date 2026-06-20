@@ -1,29 +1,41 @@
 <div
-  th:fragment="create-traffic-modal"
+  th:fragment="traffic-modal"
   class="modal modal-lg fade"
-  id="modal-create-traffic"
+  id="modal-traffic"
   tabindex="-1"
   data-bs-theme="dark"
-  aria-labelledby="#create-traffic-modal"
+  aria-labelledby="#traffic-modal"
   aria-hidden="true"
 >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Create traffic</h1>
+        <h1 class="modal-title fs-5" id="modalTitle"></h1>
       </div>
-      <form
-        th:action="@{/add-traffic}"
-        th:object="${traffic_info}"
-        method="post"
-      >
+      <form id="trafficForm" th:object="${traffic_info}" method="post">
         <div class="modal-body">
+          <div
+            class="input-group mb-3"
+            id="cpInputTrafficId"
+            style="display: none"
+          >
+            <span class="input-group-text" id="trafficId">Traffic ID</span>
+            <input
+              type="text"
+              class="form-control"
+              aria-describedby="trafficId"
+              title="trafficId"
+              readonly
+              id="inputShowID"
+            />
+          </div>
           <div class="input-group mb-3">
             <span class="input-group-text" id="lat">Latitude</span>
             <input
               type="text"
               class="form-control"
               aria-describedby="lat"
+              title="Latitude"
               readonly
               id="inputShowLat"
               th:field="*{lat}"
@@ -36,6 +48,7 @@
               class="form-control"
               aria-describedby="lng"
               id="inputShowLng"
+              title="Longitude"
               th:field="*{lng}"
               readonly
             />
@@ -47,6 +60,7 @@
               class="form-control"
               aria-describedby="address"
               id="inputShowAddress"
+              title="Address"
               th:field="*{address}"
               readonly
             />
@@ -63,7 +77,12 @@
           >
             Close
           </button>
-          <button type="submit" class="btn btn-primary">Create traffic</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="SubmitTrafficInfo"
+            title="Submit-traffic-info"
+          ></button>
         </div>
       </form>
     </div>

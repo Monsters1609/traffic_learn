@@ -1,28 +1,29 @@
 package frontend_traffic.services.implementation;
 
 import java.util.*;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import frontend_traffic.dto.traffic_speed_dto;
 import frontend_traffic.models.traffic_speed_entity;
 import frontend_traffic.models.common_type_entity.Traffic_level;
+import frontend_traffic.models.traffic_info_entity;
 import frontend_traffic.repository.traffic_speed_repository;
 import frontend_traffic.services.interfaces.traffic_speed_inter_service;
 import lombok.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class traffic_speed_service implements traffic_speed_inter_service {
     private final traffic_speed_repository trafficSpeedRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final Logger log = LoggerFactory.getLogger(traffic_speed_service.class);
     @Value("${tomtom.api.key}")
     private String key;
 
@@ -30,16 +31,55 @@ public class traffic_speed_service implements traffic_speed_inter_service {
             .baseUrl("https://api.tomtom.com")
             .build();
 
-    public traffic_speed_entity getTrafficSpeed(double lat, double lng) {
+    public traffic_speed_dto getTraffic(double lat, double lng) {
         try {
-
-            traffic_speed_entity data = restClient.get()
+            String response = restClient.get()
                     .uri("/traffic/services/4/flowSegmentData/absolute/10/json" +
                             "?point={lat},{lng}&key={key}",
                             lat, lng, key)
                     .retrieve()
-                    .body(traffic_speed_entity.class);
+                    .body(String.class);
+
+            if (response == null || response.isBlank()) {
+                log.warn("TomTom response is empty");
+                return null;
+            }
+
+            JsonNode root = objectMapper.readTree(response);
+
+            JsonNode flow = root.get("flowSegmentData");
+
+            if (flow == null || flow.isNull()) {
+                log.warn("No flowSegmentData in TomTom response: {}", response);
+                return null;
+            }
+
+            traffic_speed_dto data = objectMapper.treeToValue(flow,
+                    traffic_speed_dto.class);
+            return data;
+
+        } catch (Exception e) {
+            log.error("Cannot call TomTom API for lat={}, lng={}", lat, lng, e);
+            return null;
+        }
+    }
+
+    public traffic_speed_entity getTrafficSpeed(traffic_info_entity trafficInfo) {
+        try {
+            Double lat = trafficInfo.getLat();
+            Double lng = trafficInfo.getLng();
+
+            traffic_speed_dto data = getTraffic(lat, lng);
+
+            if (data == null) {
+                log.warn("No TomTom traffic data for traffic_id={}, lat={}, lng={}",
+                        trafficInfo.getTrafficId(), lat, lng);
+                return null;
+            }
+
             traffic_speed_entity entity = new traffic_speed_entity();
+
+            entity.setTrafficInfos(trafficInfo);
             entity.setFrc(data.getFrc());
             entity.setCurrentSpeed(data.getCurrentSpeed());
             entity.setCurrentTravelTime(data.getCurrentTravelTime());
@@ -47,15 +87,14 @@ public class traffic_speed_service implements traffic_speed_inter_service {
             entity.setFreeFlowTravelTime(data.getFreeFlowTravelTime());
             entity.setConfidence(data.getConfidence());
             entity.setRoadClosure(data.getRoadClosure());
-            entity.setTrafficLevel(handleRatio(data));
-            return trafficSpeedRepository.save(entity);
-        } catch (
+            entity.setTrafficLevel(handleRatio(data.getCurrentSpeed(), data.getFreeFlowSpeed()));
 
-        Exception e) {
-            log.error("Cannot get traffic data for {}, {}", lat, lng, e);
+            return trafficSpeedRepository.save(entity);
+
+        } catch (Exception e) {
+            log.error("Cannot get traffic data for traffic_id={}", trafficInfo.getTrafficId(), e);
             return null;
         }
-
     }
 
     public Traffic_level handleRatio(traffic_speed_entity request) {
@@ -89,6 +128,11 @@ public class traffic_speed_service implements traffic_speed_inter_service {
     public Page<traffic_speed_entity> getAllTrafficSpeed(Pageable page) {
         Page<traffic_speed_entity> result = trafficSpeedRepository.findAll(page);
         return result;
+    }
+
+    @Override
+    public List<traffic_speed_entity> getByIdTrafficInfo(UUID id) {
+        return trafficSpeedRepository.findByTrafficInfos(id);
     }
 
     // get by id / tìm id là trả về dữ liệu của id đó

@@ -1,13 +1,16 @@
 package frontend_traffic.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class traffic_info_dto {
-    @NotBlank
+    @NotNull
     private Double lat;
-    @NotBlank
+    @NotNull
     private Double lng;
     @NotBlank
     private String address;
