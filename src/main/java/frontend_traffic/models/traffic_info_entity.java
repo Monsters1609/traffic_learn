@@ -1,6 +1,9 @@
 package frontend_traffic.models;
 
 import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +28,11 @@ public class traffic_info_entity extends timestamp_entity {
     @Column(name = "address")
     private String address;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "trafficInfos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<traffic_speed_entity> traffic_speeds = new ArrayList<>();
-
+    
+    @JsonManagedReference
     @OneToMany(mappedBy = "trafficInfos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<traffic_aqi_entity> traffic_aqis = new ArrayList<>();
 }

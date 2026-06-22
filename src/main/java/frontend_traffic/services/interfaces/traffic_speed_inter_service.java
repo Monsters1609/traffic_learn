@@ -12,7 +12,7 @@ public interface traffic_speed_inter_service {
 
     traffic_speed_entity getByIdTrafficSpeed(UUID id);
 
-    List<traffic_speed_entity> getByIdTrafficInfo(UUID id);
+    Page<traffic_speed_entity> getByIdTrafficInfo(UUID id, Pageable page);
 
     traffic_speed_entity postTrafficSpeed(traffic_speed_dto request);
 

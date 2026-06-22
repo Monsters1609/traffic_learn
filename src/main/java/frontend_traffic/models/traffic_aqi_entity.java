@@ -2,6 +2,8 @@ package frontend_traffic.models;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -55,7 +57,8 @@ public class traffic_aqi_entity extends timestamp_entity {
     // tốc độ gió giật mạnh nhất
     @Column(name = "wg")
     private int wg;
-
+    
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "traffic_id")
     private traffic_info_entity trafficInfos;

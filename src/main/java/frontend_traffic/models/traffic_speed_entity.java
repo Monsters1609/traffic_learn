@@ -2,6 +2,8 @@ package frontend_traffic.models;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 import frontend_traffic.models.common_type_entity.Traffic_level;
@@ -46,7 +48,8 @@ public class traffic_speed_entity extends timestamp_entity {
     // Đường bị đóng không
     @Column(name = "road_closure")
     private Boolean roadClosure;
-
+    
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "traffic_id")
     private traffic_info_entity trafficInfos;

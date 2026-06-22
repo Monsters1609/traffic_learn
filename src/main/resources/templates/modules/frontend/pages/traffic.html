@@ -54,7 +54,7 @@
               <th scope="col">Delete</th>
             </tr>
           </thead>
-          <tbody class="table-group-divider">
+          <tbody class="table-group-divider" th:if="responseAllTraffic!=null">
             <tr th:each="value,index:${responseAllTraffic.content}">
               <th scope="row" th:text="${index.count}"></th>
               <td th:text="${value.trafficId}"></td>
@@ -73,6 +73,8 @@
                     justify-content: center;
                     align-items: center;
                   "
+                  th:data-id="${value.trafficId}"
+                  onclick="openDetailTrafficSpeed(this)"
                 >
                   <i class="bi bi-eye-fill" style="color: deepskyblue"></i>
                 </button>
@@ -110,7 +112,7 @@
                     align-items: center;
                   "
                   th:data-id="${value.trafficId}"
-                  onclick="openPopupDeleteTraffic(this)"
+                  onclick="openDeleteTraffic(this)"
                 >
                   <i class="bi bi-trash2-fill" style="color: orangered"></i>
                 </button>
@@ -165,6 +167,9 @@
         </table>
       </div>
       <div class="chartTraffic" id="chartTraffic">
+        <h3 class="titleChart col-5" id="titleChart" style="color: #fff">
+          Traffic Speed Chart
+        </h3>
         <canvas id="ChartTrafficSpeed"></canvas>
       </div>
       <!-- Import modal component -->
@@ -173,6 +178,9 @@
       ></th:block>
       <th:block
         th:replace="~{modules/frontend/components/modalDeleteTraffic :: traffic-modal-delete}"
+      ></th:block>
+      <th:block
+        th:replace="~{modules/frontend/components/modalDetailTrafficSpeed :: modal-detail-traffic-speed}"
       ></th:block>
     </th:block>
 

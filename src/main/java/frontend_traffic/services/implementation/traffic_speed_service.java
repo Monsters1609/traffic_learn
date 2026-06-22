@@ -131,8 +131,9 @@ public class traffic_speed_service implements traffic_speed_inter_service {
     }
 
     @Override
-    public List<traffic_speed_entity> getByIdTrafficInfo(UUID id) {
-        return trafficSpeedRepository.findByTrafficInfos(id);
+    public Page<traffic_speed_entity> getByIdTrafficInfo(UUID id, Pageable page) {
+        Page<traffic_speed_entity> result = trafficSpeedRepository.findByTrafficInfos_TrafficId(id, page);
+        return result;
     }
 
     // get by id / tìm id là trả về dữ liệu của id đó
