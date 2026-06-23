@@ -26,7 +26,7 @@ public class traffic_info_service implements traffic_info_inter_service {
         return result;
     }
 
-    @Scheduled(fixedRate = 15 * 60 * 1000)
+    @Scheduled(fixedDelay = 15 * 60 * 1000)
     public void syncTraffic() {
         List<traffic_info_entity> infos = trafficInfoRepository.findAll();
         for (traffic_info_entity info : infos) {

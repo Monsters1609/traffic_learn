@@ -1,6 +1,8 @@
 package frontend_traffic.services.implementation;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -8,6 +10,8 @@ import org.springframework.web.client.RestClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
+
+import frontend_traffic.dto.traffic_chart_dto;
 import frontend_traffic.dto.traffic_speed_dto;
 import frontend_traffic.models.traffic_speed_entity;
 import frontend_traffic.models.common_type_entity.Traffic_level;
@@ -68,7 +72,6 @@ public class traffic_speed_service implements traffic_speed_inter_service {
         try {
             Double lat = trafficInfo.getLat();
             Double lng = trafficInfo.getLng();
-
             traffic_speed_dto data = getTraffic(lat, lng);
 
             if (data == null) {
@@ -125,11 +128,31 @@ public class traffic_speed_service implements traffic_speed_inter_service {
 
     // get all / Lấy tất cả dữ liệu
     @Override
-    public Page<traffic_speed_entity> getAllTrafficSpeed(Pageable page) {
-        Page<traffic_speed_entity> result = trafficSpeedRepository.findAll(page);
-        return result;
+    public List<traffic_speed_entity> getAllTrafficSpeed() {
+        return trafficSpeedRepository.findAll();
     }
 
+    @Override
+    public List<traffic_chart_dto> getTrafficChart() {
+        Map<String, List<traffic_speed_entity>> grouped = trafficSpeedRepository.findAll()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        item -> item.getTrafficInfos().getAddress()));
+
+        return grouped.entrySet()
+                .stream()
+                .map(entry -> new traffic_chart_dto(
+                        entry.getKey(),
+                        entry.getValue()
+                                .stream()
+                                .map(item -> new traffic_chart_dto.TrafficPoint(
+                                        item.getCurrentSpeed(),
+                                        item.getCreatedAt()))
+                                .toList()))
+                .toList();
+    }
+
+    // lấy dữ liệu theo id cua traffic_info
     @Override
     public Page<traffic_speed_entity> getByIdTrafficInfo(UUID id, Pageable page) {
         Page<traffic_speed_entity> result = trafficSpeedRepository.findByTrafficInfos_TrafficId(id, page);

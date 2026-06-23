@@ -10,7 +10,7 @@ import lombok.*;
 
 import org.springframework.web.bind.annotation.*;
 
-import frontend_traffic.models.traffic_info_entity;
+import frontend_traffic.dto.traffic_chart_dto;
 import frontend_traffic.models.traffic_speed_entity;
 import frontend_traffic.services.implementation.traffic_speed_service;
 
@@ -27,14 +27,12 @@ public class traffic_speed_controller {
     // public traffic_speed_controller(traffic_speed_service trafficSpeedService) {
     // this.trafficSpeedService = trafficSpeedService;
     // }
-    // @GetMapping("/get-all-traffic-speed")
-    // public String getAllTrafficSpeed(Model model, @RequestParam(defaultValue =
-    // "0") int page,
-    // @RequestParam(defaultValue = "5") int size) {
-    // model.addAttribute("get_all_traffic_speed",
-    // trafficSpeedService.getAllTrafficSpeed(PageRequest.of(page, size)));
-    // return "modules/frontend/pages/traffic";
-    // }
+    @GetMapping("/get-all-traffic-speed")
+    @ResponseBody
+    public List<traffic_speed_entity> getAllTrafficSpeed(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return trafficSpeedService.getAllTrafficSpeed();
+    }
 
     @GetMapping("/get-traffic-info/{id}")
     @ResponseBody
@@ -43,5 +41,11 @@ public class traffic_speed_controller {
             @RequestParam(defaultValue = "5") int size) {
         return trafficSpeedService.getByIdTrafficInfo(id,
                 PageRequest.of(page, size));
+    }
+
+    @GetMapping("/get-chart-traffic-speed")
+    @ResponseBody
+    public List<traffic_chart_dto> getChart() {
+        return trafficSpeedService.getTrafficChart();
     }
 }
